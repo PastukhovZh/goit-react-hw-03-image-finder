@@ -1,34 +1,21 @@
 import { ImageGallery } from "./ImageGallery/ImageGallery";
-import { Seachbar } from "./Searchbar/Searchbar";
+import { Searchbar } from "./Searchbar/Searchbar";
 import { Button } from "./Button/Button"
 import { Component } from "react";
-import { getPictures } from "api";
 
 export class App extends Component {
   state = {
-    page: 1,
-    query: '',
-    loadMore: null,
+input:''
 }
-
-  async componentDidMount() {
-  try {
-      // this.setState({ isLoadingBreeds: true });
-      const pictures = await getPictures();
-      this.setState({ pictures });
-    } catch {
-      this.setState({ error: 'Failed to load breeds :(' });
-  }
-  // finally {
-  //     this.setState({ isLoadingBreeds: false });
-  //   }
-}
+handleSubmit = e => {
+    this.setState({ input: e });
+  };
   
   render() {
     return (
       <div>
-      <Seachbar />
-      <ImageGallery />
+      <Searchbar onSubmit ={this.handleSubmit} />
+      <ImageGallery input={this.state.input} />
       <Button />
     </div>
   )
