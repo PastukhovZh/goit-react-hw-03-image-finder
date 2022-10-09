@@ -1,10 +1,15 @@
 import { getPictures } from "api";
 import { ImageGalleryItem } from "components/ImageGalleryItem/ImageGalleryItem";
 import { GalleryItem } from "components/ImageGalleryItem/ImageGalleryItem.styled";
+import { Loader } from "components/Loader/Loader";
 import { Component } from "react"
 import { toast } from "react-toastify";
 import { Gallery } from "./ImageGallery.styled";
+import { Button } from "components/Button/Button";
+import { Modal } from "components/Modal/Modal";
+import { ButtonWrap } from "components/Button/Button.styled";
 
+import { PropTypes } from 'prop-types';
 
 export class ImageGallery extends Component {
     state = {
@@ -31,16 +36,40 @@ export class ImageGallery extends Component {
         openModal = imageURL => {
     this.setState({ isModalOpen: true, imageURL: imageURL });
   };
-  closeModal = () => this.setState({ isModalOpen: false, modalUrl: null });
+    closeModal = () => this.setState({ isModalOpen: false, modalUrl: null });
+    
+
+    loadMore = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+    this.setState({ loading: true });
+    getPictures(this.props.input, this.state.page + 1).then(response => {
+      this.setState({
+        pictures: [...this.state.pictures, ...response],
+        loading: false,
+      });
+    });
+  };
     render() {
         return (
+            <>
+                {this.state.loading && <Loader/>}
             <Gallery className="gallery">
                 {this.state.pictures.map(picture => (
-                    <GalleryItem key={picture.id}>
-                        <ImageGalleryItem image={picture}  />
-                    </GalleryItem>
-          ))}
+                <GalleryItem key={picture.id}>
+                    <ImageGalleryItem image={picture} onClick={this.openModal} />
+                </GalleryItem>
+                ))}
             </Gallery>
+                {this.state.isModalOpen && <Modal imageURL={this.state.imageURL} onClose={this.closeModal} />}
+                <ButtonWrap>
+                {this.state.pictures.length > 0 && <Button loadMore={this.loadMore} />}
+                </ButtonWrap>
+            </>
         )
     }
 }
+
+
+ImageGallery.propTypes = {
+  input: PropTypes.string.isRequired,
+};
