@@ -15,7 +15,7 @@ handleInput = e => {
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.search === '') {
-      toast.error('input a word');
+      toast.error('write something');
       return;
     }
     this.props.onSubmit(this.state.search);
@@ -24,14 +24,14 @@ handleInput = e => {
 
   render() {
       return (
-        <header class="searchbar">
-  <form class="form" onSubmit={this.handleSubmit}>
-    <button type="submit" class="button">
-      <span class="button-label">Search</span>
+        <header className="searchbar">
+  <form className="form" onSubmit={this.handleSubmit}>
+    <button type="submit" className="button">
+      <span className="button-label">Search</span>
     </button>
 
     <input
-      class="input"
+      className="input"
       type="text"
       autoComplete="off"
               autoFocus
