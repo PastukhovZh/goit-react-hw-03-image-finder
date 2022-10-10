@@ -40,7 +40,7 @@ export class ImageGallery extends Component {
     
 
     loadMore = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
+    // this.setState(prevState => ({ page: prevState.page + 1 }));
     this.setState({ loading: true });
     getPictures(this.props.input, this.state.page + 1).then(response => {
       this.setState({
